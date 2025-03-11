@@ -1,0 +1,30 @@
+.value {
+    font-size: 28px;
+    color: #444444;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 36px;
+    color: #333333;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.test {
+    font-size: 28px;
+    color: #444444;
+    margin-bottom: 15px;
+}
+
+h2 {
+    font-size: 28px;
+    color: #444444;
+    margin-bottom: 15px;
+}
+
+.some-other-class {
+    font-size: 28px;
+    color: #444444;
+    margin-bottom: 15px;
+}
