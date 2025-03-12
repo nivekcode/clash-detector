@@ -15,5 +15,8 @@
     "url": "https://github.com/nivekcode/clash-detector/issues"
   },
   "homepage": "https://github.com/nivekcode/clash-detector#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "css-tree": "^3.1.0"
+  }
 }
