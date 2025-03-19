@@ -32,7 +32,17 @@ const processCSSFiles = async () => {
             allSelectors.push(selectors);
         });
 
-        console.log('Matches', getMatches(allSelectors));
+
+        const matchedSelectors = getMatches(allSelectors);
+
+        console.log('Matches', matchedSelectors);
+
+        cssFiles.map((filePath, index) => {
+            const buffer = fs.readFileSync(path.join(stylesFolderPath, filePath));
+            const content = buffer.toString();
+            const ast = cssTree.parse(content);
+            console.log(`Matches from file ${index}: `, getCssRulesForSelectors(matchedSelectors, ast));
+        });
     } catch (err) {
         console.error('Error processing CSS files:', err.message);
     }
@@ -44,12 +54,31 @@ function getMatches(allSelectors) {
 
     const matches = [];
 
-    for(const firstFileSelector of selecotrsFromFirstFile){
-        if(selecotrsFromSecondFile.includes(firstFileSelector)){
+    for (const firstFileSelector of selecotrsFromFirstFile) {
+        if (selecotrsFromSecondFile.includes(firstFileSelector)) {
             matches.push(firstFileSelector);
         }
     }
     return matches;
+}
+
+function getCssRulesForSelectors(selectors, ast) {
+    const matchedRules = [];
+
+    cssTree.walk(ast, {
+        visit: 'Rule',
+        enter(node) {
+            if (node.prelude.type === 'SelectorList') {
+                const selectorString = cssTree.generate(node.prelude);
+                if (selectors.some(sel => selectorString.includes(sel))) {
+                    const properties = cssTree.generate(node.block);
+                    matchedRules.push(`${selectorString} ${properties}`);
+                }
+            }
+        }
+    });
+
+    return matchedRules;
 }
 
 // Run the script
